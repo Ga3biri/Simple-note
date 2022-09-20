@@ -1,0 +1,101 @@
+<section id="note-list">
+    <div class="container-fluid">
+        <h1 class="text-center p-3 bg-success text-light">
+            My Notes
+        </h1>
+        <div class="row">
+            <div class="col-6 col-md-2 offset-md-4">
+                <button class="btn btn-block btn-success" (click)="AddNewNote(addNote)">Add Note</button>
+            </div>
+            <div class="col-6 col-md-2">
+                <button class="btn btn-block btn-danger" (click)="EmptyNotes()">Empty my list</button>
+            </div>
+        </div>
+        <div class="row" *ngIf="noteList.length == 0">
+            <div class="col-8 offset-2 text-center mt-5">
+                <h1 class="p-5 border border-success rounded-pill">
+                    There isn't any note yet,Please add some....
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mt-3" *ngFor="let note of noteList">
+                <div class="card text-center">
+                    <div class="card-header">
+                      <b>
+                        {{note.title}}
+                      </b>
+                    </div>
+                    <div class="card-body">
+                      <p role="heading" class="card-text">
+                        <a href="javascript:void()" class="text-dark" [routerLink]="['/note',note.id]" routerLinkActive="router-link-active" >
+                            {{note.body.length < 40 ? note.body : note.body.substr(0, 40)+'....'}}.
+                        </a>
+                      </p>
+                      <i role="button" class="p-2 fa-solid fa-trash text-danger" (click)="DeleteNote(note)"></i>
+                      <i role="button" class="p-2 fa-regular fa-pen-to-square text-info" (click)="EditNote(editNote,note)"></i>
+                      
+                    </div>
+                    <div class="card-footer text-muted">
+                      {{note.creationDate | date:'medium'}}
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #addNote>
+    <div class="modal-header">
+       <h4 class="modal-title">Add New Note</h4>
+       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">×</span>
+       </button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="modal-body">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" class="form-control" formControlName="title">
+                <p class="text-danger" *ngIf="f.title.errors && submitted">This Field Is Required</p>
+            </div>
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea name="body" id="body" cols="30" rows="3" class="form-control" formControlName="body"></textarea>
+                <p class="text-danger" *ngIf="f.body.errors && submitted">This Field Is Required</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
+            <button type="submit" class="btn btn-success" >Add Note</button>
+        </div>
+    </form>
+ </ng-template>
+
+
+ <ng-template #editNote>
+    <div class="modal-header">
+       <h4 class="modal-title">Add New Note</h4>
+       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">×</span>
+       </button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="Update()">
+    <div class="modal-body">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" class="form-control" formControlName="title">
+                <p class="text-danger" *ngIf="f.title.errors && submitted">This Field Is Required</p>
+            </div>
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea name="body" id="body" cols="30" rows="3" class="form-control" formControlName="body"></textarea>
+                <p class="text-danger" *ngIf="f.body.errors && submitted">This Field Is Required</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
+            <button type="submit" class="btn btn-success" >Update Note</button>
+        </div>
+    </form>
+ </ng-template>

@@ -1,0 +1,61 @@
+<section id="note-list">
+    <div class="container-fluid">
+        <h1 class="text-center p-3 bg-success text-light">
+            My Note Details
+        </h1>
+        <div class="row">
+            <div class="col-8 offset-2 mt-3">
+                <div class="card text-center">
+                    <div class="card-header">
+                      <b>
+                        {{note?.title}}
+                      </b>
+                    </div>
+                    <div class="card-body">
+                      <p role="heading" class="card-text">{{note?.body}}</p>
+                      <i role="button" class="p-2 fa-solid fa-trash text-danger" (click)="DeleteNote(note)"></i>
+                      <i role="button" class="p-2 fa-regular fa-pen-to-square text-info" (click)="EditNote(template)"></i>
+                      
+                    </div>
+                    <div class="card-footer text-muted">
+                      {{note?.creationDate | date:'medium'}}
+                    </div>
+                  </div>
+
+                  <div class="row mt-3">
+                    <div class="col-12 col-md-4 offset-md-4">
+                        <button class="btn btn-block btn-info" [routerLink]="['']" routerLinkActive="router-link-active" >Back To My Note List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<ng-template #template>
+    <div class="modal-header">
+       <h4 class="modal-title">Edit Note</h4>
+       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">×</span>
+       </button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="Update()">
+    <div class="modal-body">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" class="form-control" formControlName="title">
+                <p class="text-danger" *ngIf="f.title.errors && submitted">This Field Is Required</p>
+            </div>
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea name="body" id="body" cols="30" rows="3" class="form-control" formControlName="body"></textarea>
+                <p class="text-danger" *ngIf="f.body.errors && submitted">This Field Is Required</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
+            <button type="submit" class="btn btn-success" >Edit Note</button>
+        </div>
+    </form>
+ </ng-template>
